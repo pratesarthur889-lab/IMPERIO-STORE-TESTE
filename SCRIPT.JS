@@ -1,0 +1,55 @@
+const form = document.getElementById("calc-form");
+const custoInput = document.getElementById("custo");
+const freteInput = document.getElementById("frete");
+const taxasInput = document.getElementById("taxas");
+const margemInput = document.getElementById("margem");
+
+const custoTotalEl = document.getElementById("custo-total");
+const precoVendaEl = document.getElementById("preco-venda");
+const lucroEl = document.getElementById("lucro");
+const erroEl = document.getElementById("erro");
+
+function formatarMoeda(valor) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(valor);
+}
+
+function calcular() {
+  const custo = Number(custoInput.value) || 0;
+  const frete = Number(freteInput.value) || 0;
+  const taxas = Number(taxasInput.value) || 0;
+  const margem = Number(margemInput.value) || 0;
+
+  if (margem >= 100) {
+    erroEl.textContent = "A margem de lucro precisa ser menor que 100%.";
+    custoTotalEl.textContent = "R$ 0,00";
+    precoVendaEl.textContent = "R$ 0,00";
+    lucroEl.textContent = "R$ 0,00";
+    return;
+  }
+
+  erroEl.textContent = "";
+
+  const custoTotal = custo + frete + taxas;
+  const margemDecimal = margem / 100;
+  const precoVenda = custoTotal / (1 - margemDecimal);
+  const lucro = precoVenda - custoTotal;
+
+  custoTotalEl.textContent = formatarMoeda(custoTotal);
+  precoVendaEl.textContent = formatarMoeda(precoVenda);
+  lucroEl.textContent = formatarMoeda(lucro);
+}
+
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+  calcular();
+});
+
+custoInput.addEventListener("input", calcular);
+freteInput.addEventListener("input", calcular);
+taxasInput.addEventListener("input", calcular);
+margemInput.addEventListener("input", calcular);
+
+calcular();
