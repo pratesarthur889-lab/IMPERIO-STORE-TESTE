@@ -1,65 +1,63 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Império Store - Calculadora de Preço de Venda</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <header class="header">
-        <h1>Império Store</h1>
-        <p>Calculadora de preço de venda</p>
-      </header>
+const form = document.getElementById("calc-form");
+const custoInput = document.getElementById("custo");
+const freteInput = document.getElementById("frete");
+const taxasInput = document.getElementById("taxas");
+const plataformaInput = document.getElementById("plataforma");
+const margemInput = document.getElementById("margem");
 
-      <main class="card">
-        <form id="calc-form">
-          <div class="campo">
-            <label for="custo">Custo do produto (R$)</label>
-            <input id="custo" type="number" min="0" step="0.01" value="25" />
-          </div>
+const custoTotalEl = document.getElementById("custo-total");
+const precoVendaEl = document.getElementById("preco-venda");
+const lucroEl = document.getElementById("lucro");
+const erroEl = document.getElementById("erro");
 
-          <div class="campo">
-            <label for="frete">Frete / embalagem (R$)</label>
-            <input id="frete" type="number" min="0" step="0.01" value="5" />
-          </div>
+function formatarMoeda(valor) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(valor);
+}
 
-          <div class="campo">
-            <label for="taxas">Taxas / impostos (R$)</label>
-            <input id="taxas" type="number" min="0" step="0.01" value="2" />
-          </div>
+function calcular() {
+  const custo = Number(custoInput.value) || 0;
+  const frete = Number(freteInput.value) || 0;
+  const taxas = Number(taxasInput.value) || 0;
+  const plataforma = Number(plataformaInput.value) || 0;
+  const margem = Number(margemInput.value) || 0;
 
-          <div class="campo">
-            <label for="margem">Margem desejada (%)</label>
-            <input id="margem" type="number" min="0" max="99.99" step="0.01" value="30" />
-          </div>
+  if (margem >= 100) {
+    erroEl.textContent = "A margem de lucro precisa ser menor que 100%.";
+    custoTotalEl.textContent = "R$ 0,00";
+    precoVendaEl.textContent = "R$ 0,00";
+    lucroEl.textContent = "R$ 0,00";
+    return;
+  }
 
-          <button type="submit">Calcular</button>
-        </form>
+  erroEl.textContent = "";
 
-        <div class="resultado">
-          <div class="linha">
-            <span>Custo total:</span>
-            <strong id="custo-total">R$ 0,00</strong>
-          </div>
+  const custoTotal = custo + frete + taxas + plataforma;
+  const margemDecimal = margem / 100;
+  const precoVenda = custoTotal / (1 - margemDecimal);
+  const lucro = precoVenda - custoTotal;
 
-          <div class="linha">
-            <span>Preço de venda:</span>
-            <strong id="preco-venda">R$ 0,00</strong>
-          </div>
+  custoTotalEl.textContent = formatarMoeda(custoTotal);
+  precoVendaEl.textContent = formatarMoeda(precoVenda);
+  lucroEl.textContent = formatarMoeda(lucro);
+}
 
-          <div class="linha">
-            <span>Lucro:</span>
-            <strong id="lucro">R$ 0,00</strong>
-          </div>
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+  calcular();
+});
 
-          <p id="erro" class="erro"></p>
-        </div>
-      </main>
-    </div>
+custoInput.addEventListener("input", calcular);
+freteInput.addEventListener("input", calcular);
+taxasInput.addEventListener("input", calcular);
+plataformaInput.addEventListener("input", calcular);
+margemInput.addEventListener("input", calcular);
 
-    <script src="script.js"></script>
-  </body>
-</html>
-<!-- Atualização da publicação -->
+calcular();
+
+
+
+      
+

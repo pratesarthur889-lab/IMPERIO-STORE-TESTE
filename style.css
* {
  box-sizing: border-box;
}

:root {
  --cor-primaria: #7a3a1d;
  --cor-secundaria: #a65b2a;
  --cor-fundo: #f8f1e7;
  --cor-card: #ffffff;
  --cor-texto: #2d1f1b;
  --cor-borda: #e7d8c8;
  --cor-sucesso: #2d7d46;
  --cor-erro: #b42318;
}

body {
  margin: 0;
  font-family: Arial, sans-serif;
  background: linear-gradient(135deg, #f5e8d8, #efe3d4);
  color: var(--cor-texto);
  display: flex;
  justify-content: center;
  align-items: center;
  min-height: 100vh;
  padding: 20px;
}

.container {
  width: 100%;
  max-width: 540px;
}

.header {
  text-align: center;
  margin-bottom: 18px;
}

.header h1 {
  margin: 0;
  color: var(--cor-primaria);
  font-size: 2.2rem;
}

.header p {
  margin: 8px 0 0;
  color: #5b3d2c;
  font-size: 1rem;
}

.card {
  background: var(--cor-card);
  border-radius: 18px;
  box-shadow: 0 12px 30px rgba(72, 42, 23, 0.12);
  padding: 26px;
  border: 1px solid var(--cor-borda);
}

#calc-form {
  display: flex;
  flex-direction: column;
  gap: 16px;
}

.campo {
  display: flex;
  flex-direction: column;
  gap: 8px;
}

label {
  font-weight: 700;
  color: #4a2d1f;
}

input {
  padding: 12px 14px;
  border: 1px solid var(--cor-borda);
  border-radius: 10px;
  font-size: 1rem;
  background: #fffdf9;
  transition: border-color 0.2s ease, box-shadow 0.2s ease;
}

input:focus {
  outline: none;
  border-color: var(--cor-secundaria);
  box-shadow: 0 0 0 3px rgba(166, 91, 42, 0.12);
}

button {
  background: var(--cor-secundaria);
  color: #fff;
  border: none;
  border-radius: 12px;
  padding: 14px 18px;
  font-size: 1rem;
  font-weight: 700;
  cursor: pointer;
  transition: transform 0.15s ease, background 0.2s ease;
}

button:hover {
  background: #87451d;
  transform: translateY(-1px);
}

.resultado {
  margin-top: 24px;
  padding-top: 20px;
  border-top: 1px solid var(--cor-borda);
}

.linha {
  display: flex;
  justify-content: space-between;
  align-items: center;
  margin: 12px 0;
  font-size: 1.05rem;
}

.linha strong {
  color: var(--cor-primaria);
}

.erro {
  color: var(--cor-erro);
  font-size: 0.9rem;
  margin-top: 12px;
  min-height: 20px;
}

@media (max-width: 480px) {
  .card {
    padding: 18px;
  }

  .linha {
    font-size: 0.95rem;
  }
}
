@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Império Store - Calculadora de Preço de Venda</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>Império Store</h1>
+        <p>Calculadora de preço de venda</p>
+      </header>
+
+      <main class="card">
+        <form id="calc-form">
+          <div class="campo">
+            <label for="custo">Custo do produto (R$)</label>
+            <input id="custo" type="number" min="0" step="0.01" value="25" />
+          </div>
+
+          <div class="campo">
+            <label for="frete">Frete / embalagem (R$)</label>
+            <input id="frete" type="number" min="0" step="0.01" value="5" />
+          </div>
+
+          <div class="campo">
+            <label for="taxas">Taxas / impostos (R$)</label>
+            <input id="taxas" type="number" min="0" step="0.01" value="2" />
+          </div>
+
+          <div class="campo">
+            <label for="plataforma">Taxa da plataforma (R$)</label>
+            <input id="plataforma" type="number" min="0" step="0.01" value="0" />
+          </div>
+
+          <div class="campo">
+            <label for="margem">Margem desejada (%)</label>
+            <input id="margem" type="number" min="0" max="99.99" step="0.01" value="30" />
+          </div>
+
+          <button type="submit">Calcular</button>
+        </form>
+
+        <div class="resultado">
+          <div class="linha">
+            <span>Custo total:</span>
+            <strong id="custo-total">R$ 0,00</strong>
+          </div>
+
+          <div class="linha">
+            <span>Preço de venda:</span>
+            <strong id="preco-venda">R$ 0,00</strong>
+          </div>
+
+          <div class="linha">
+            <span>Lucro:</span>
+            <strong id="lucro">R$ 0,00</strong>
+          </div>
+
+          <p id="erro" class="erro"></p>
+        </div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
